@@ -70,8 +70,8 @@
                 .join("");
         }
 
-        async function checkAnswer() {
-            var userInput = document.getElementById('user-answer').value.trim();
+                async function checkAnswer() {
+            var userInput = document.getElementById('user-answer').value.trim();  // Trim spaces here
             var feedback = document.getElementById('feedback');
             var debugInfo = document.getElementById('debug-info');
 
@@ -86,7 +86,7 @@
             }
 
             // Display the user input for debugging
-            debugInfo.textContent += "User input: " + userInput + "<br>";
+            debugInfo.textContent += "User input: '" + userInput + "'<br>";
 
             // Correct answer hash (known MD5 value)
             var correctAnswerHash = "32b775a1bb9e994fa7f19d877fc89a71";
@@ -106,7 +106,6 @@
                 feedback.style.color = "red";
             }
         }
-
         function showHint() {
             var hint = document.getElementById("hint");
             hint.textContent = "The answer you seek requires the key; UNLOCK it!";
