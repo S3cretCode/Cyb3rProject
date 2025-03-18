@@ -78,44 +78,47 @@
     <a id="IMPORTANTlink" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="position: absolute; left: -9999px;">Nothing to see here</a>
 
     <script>
-        function xorEncryptDecrypt(input, key) {
-            let result = "";
-            for (let i = 0; i < input.length; i++) {
-                result += String.fromCharCode(input.charCodeAt(i) ^ key.charCodeAt(i % key.length));
-            }
-            return btoa(result);
-        }
-
         async function hashMD5(input) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(input);
-    const hashBuffer = await crypto.subtle.digest("MD5", data);
-    return Array.from(new Uint8Array(hashBuffer))
-        .map(byte => byte.toString(16).padStart(2, "0"))
-        .join("");
-}
-
-    async function checkAnswer() {
-        var userInput = document.getElementById('user-answer').value.trim();
-        var feedback = document.getElementById('feedback');
-
-        // Clear the feedback initially
-        feedback.textContent = "";
-
-        var correctAnswerHash = "32b775a1bb9e994fa7f19d877fc89a71"; 
-
-        // Wait for the user input to be hashed
-        var userHash = await hashMD5(userInput);
-
-        // Check if the user's hash matches the correct answer
-        if (userHash === correctAnswerHash) {
-            feedback.textContent = "Correct! Congratulations!";
-            feedback.style.color = "green";
-        } else {
-            feedback.textContent = "Incorrect, try again!";
-            feedback.style.color = "red";
+            const encoder = new TextEncoder();
+            const data = encoder.encode(input);
+            const hashBuffer = await crypto.subtle.digest("MD5", data);
+            return Array.from(new Uint8Array(hashBuffer))
+                .map(byte => byte.toString(16).padStart(2, "0"))
+                .join("");
         }
-    }
+
+        async function checkAnswer() {
+            var userInput = document.getElementById('user-answer').value.trim();
+            var feedback = document.getElementById('feedback');
+
+            // Clear feedback before updating
+            feedback.textContent = "";
+
+            if (!userInput) {
+                feedback.textContent = "Please enter an answer!";
+                feedback.style.color = "orange";
+                return;
+            }
+
+            console.log("User input: " + userInput);
+
+            // Correct answer hash (known MD5 value)
+            var correctAnswerHash = "32b775a1bb9e994fa7f19d877fc89a71";
+
+            // Generate MD5 hash of user input
+            var userHash = await hashMD5(userInput);
+
+            console.log("User input hash: " + userHash); // Debugging log
+
+            // Check if the hash matches the correct one
+            if (userHash === correctAnswerHash) {
+                feedback.textContent = "Correct! Congratulations!";
+                feedback.style.color = "green";
+            } else {
+                feedback.textContent = "Incorrect, try again!";
+                feedback.style.color = "red";
+            }
+        }
 
         function showHint() {
             var hint = document.getElementById("hint");
